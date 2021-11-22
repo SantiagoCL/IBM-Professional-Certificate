@@ -1,0 +1,27 @@
+predTree = Tree.predict(X_testset)
+print (predTree [0:5])
+print (y_testset [0:5])
+
+from sklearn import metrics
+import matplotlib.pyplot as plt
+
+print("Accuracy: ", metrics.accuracy_score(y_testset, predTree))
+
+
+!conda install -c conda-forge pydotplus -y
+!conda install -c conda-forge python-graphviz -y
+from sklearn.externals.six import StringIO
+import pydotplus
+import matplotlib.image as mpimg
+from sklearn import tree
+%matplotlib inline 
+dot_data = StringIO()
+filename = "loan.png"
+featureNames = df.columns[0:8]
+targetNames = df['loan_status'].unique().tolist()
+out=tree.export_graphviz(Tree,feature_names=featureNames, out_file=dot_data, class_names= np.unique(y_trainset), filled=True,  special_characters=True,rotate=False)  
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+graph.write_png(filename)
+img = mpimg.imread(filename)
+plt.figure(figsize=(100, 200))
+plt.imshow(img,interpolation='nearest')
